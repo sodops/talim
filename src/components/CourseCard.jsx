@@ -1,37 +1,54 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Star, Clock, User } from 'lucide-react';
+import { Star, User } from 'lucide-react';
+import { motion } from 'framer-motion';
+import Badge from './Badge';
 
 const CourseCard = ({ course }) => {
     return (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-            <img src={course.image} alt={course.title} className="w-full h-48 object-cover" />
-            <div className="p-4">
-                <div className="flex justify-between items-start mb-2">
-                    <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">{course.category}</span>
-                    <div className="flex items-center text-yellow-500">
-                        <Star size={16} fill="currentColor" />
-                        <span className="ml-1 text-sm font-medium">{course.rating}</span>
-                    </div>
+        <motion.div
+            whileHover={{ y: -8 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group"
+        >
+            <div className="relative overflow-hidden">
+                <img
+                    src={course.image}
+                    alt={course.title}
+                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute top-4 left-4">
+                    <Badge variant="primary">{course.category}</Badge>
+                </div>
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
+                    <Star size={16} fill="#FCD34D" className="text-yellow-400" />
+                    <span className="text-sm font-semibold text-gray-900">{course.rating}</span>
+                </div>
+            </div>
+
+            <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary-600 transition-colors">
+                    {course.title}
+                </h3>
+
+                <div className="flex items-center text-gray-600 text-sm mb-4">
+                    <User size={16} className="mr-2" />
+                    <span>{course.instructor}</span>
                 </div>
 
-                <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2">{course.title}</h3>
-
-                <div className="flex items-center text-gray-500 text-sm mb-4 space-x-4">
-                    <div className="flex items-center">
-                        <User size={16} className="mr-1" />
-                        <span>{course.instructor}</span>
-                    </div>
-                </div>
-
-                <div className="flex justify-between items-center mt-4">
-                    <span className="text-xl font-bold text-blue-600">{course.price.toLocaleString()} UZS</span>
-                    <Link to={`/course/${course.id}`} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition text-sm">
+                <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                    <span className="text-2xl font-bold text-primary-600">
+                        {course.price.toLocaleString()} <span className="text-sm text-gray-500">UZS</span>
+                    </span>
+                    <Link
+                        to={`/course/${course.id}`}
+                        className="px-5 py-2.5 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm"
+                    >
                         Batafsil
                     </Link>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
