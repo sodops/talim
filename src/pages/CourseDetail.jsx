@@ -2,20 +2,23 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/useStore';
 import { PlayCircle, Lock, Clock, Users, Star } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import Button from '../components/Button';
 import Badge from '../components/Badge';
 
 const CourseDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { courses, user, enrollCourse } = useStore();
+    const courses = useStore((state) => state.courses);
+    const user = useStore((state) => state.user);
+    const enrollCourse = useStore((state) => state.enrollCourse);
 
     const course = courses.find(c => c.id === parseInt(id));
 
     if (!course) return <div className="text-center py-10">Kurs topilmadi</div>;
 
     const isEnrolled = user?.enrolledCourses.includes(course.id);
+    const firstLessonId = course.lessons[0]?.id;
 
     const handleEnroll = () => {
         if (!user) {
@@ -32,7 +35,7 @@ const CourseDetail = () => {
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Main Content */}
                     <div className="lg:col-span-2">
-                        <motion.div
+                        <Motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             className="bg-white rounded-2xl shadow-lg overflow-hidden"
@@ -67,7 +70,7 @@ const CourseDetail = () => {
                                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Darslar rejasi</h2>
                                 <div className="space-y-3">
                                     {course.lessons.map((lesson, index) => (
-                                        <motion.div
+                                        <Motion.div
                                             key={lesson.id}
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
@@ -91,16 +94,16 @@ const CourseDetail = () => {
                                             ) : (
                                                 <Lock className="text-gray-400" size={24} />
                                             )}
-                                        </motion.div>
+                                        </Motion.div>
                                     ))}
                                 </div>
                             </div>
-                        </motion.div>
+                        </Motion.div>
                     </div>
 
                     {/* Sidebar */}
                     <div className="lg:col-span-1">
-                        <motion.div
+                        <Motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
@@ -114,15 +117,27 @@ const CourseDetail = () => {
                             </div>
 
                             {isEnrolled ? (
-                                <Button
-                                    onClick={() => navigate(`/course/${course.id}/lesson/${course.lessons[0].id}`)}
-                                    variant="success"
-                                    size="lg"
-                                    className="w-full mb-4"
-                                >
-                                    <PlayCircle className="mr-2" size={20} />
-                                    Davom ettirish
-                                </Button>
+                                <>
+                                    <Button
+                                        onClick={() => {
+                                            if (firstLessonId) {
+                                                navigate(`/course/${course.id}/lesson/${firstLessonId}`);
+                                            }
+                                        }}
+                                        variant="success"
+                                        size="lg"
+                                        className="w-full mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        disabled={!firstLessonId}
+                                    >
+                                        <PlayCircle className="mr-2" size={20} />
+                                        Davom ettirish
+                                    </Button>
+                                    {!firstLessonId && (
+                                        <p className="text-sm text-gray-500 text-center mb-4">
+                                            Darslar tez orada qo'shiladi.
+                                        </p>
+                                    )}
+                                </>
                             ) : (
                                 <Button
                                     onClick={handleEnroll}
@@ -149,7 +164,7 @@ const CourseDetail = () => {
                                     <span className="font-semibold text-gray-900">{course.instructor}</span>
                                 </div>
                             </div>
-                        </motion.div>
+                        </Motion.div>
                     </div>
                 </div>
             </div>

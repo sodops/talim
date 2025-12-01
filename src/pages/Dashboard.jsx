@@ -1,11 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useStore } from '../context/useStore';
 import CourseCard from '../components/CourseCard';
 import { Award, BookOpen, CheckCircle, TrendingUp } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 
 const Dashboard = () => {
-    const { user, courses } = useStore();
+    const user = useStore((state) => state.user);
+    const courses = useStore((state) => state.courses);
 
     if (!user) {
         return <div className="container mx-auto px-4 py-8 text-center">Iltimos, tizimga kiring.</div>;
@@ -53,7 +55,7 @@ const Dashboard = () => {
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="container mx-auto px-4">
                 {/* Welcome Banner */}
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-2xl p-8 mb-8 text-white"
@@ -69,12 +71,12 @@ const Dashboard = () => {
                             <p className="text-primary-100">O'rganishni davom ettiring va maqsadlaringizga erishing</p>
                         </div>
                     </div>
-                </motion.div>
+                </Motion.div>
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                     {stats.map((stat, index) => (
-                        <motion.div
+                        <Motion.div
                             key={index}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -88,7 +90,7 @@ const Dashboard = () => {
                             </div>
                             <div className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</div>
                             <div className="text-gray-600 text-sm">{stat.label}</div>
-                        </motion.div>
+                        </Motion.div>
                     ))}
                 </div>
 
@@ -97,7 +99,7 @@ const Dashboard = () => {
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Mening Kurslarim</h2>
 
                     {enrolledCoursesList.length > 0 ? (
-                        <motion.div
+                        <Motion.div
                             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                             initial="hidden"
                             animate="visible"
@@ -110,7 +112,7 @@ const Dashboard = () => {
                             }}
                         >
                             {enrolledCoursesList.map(course => (
-                                <motion.div
+                                <Motion.div
                                     key={course.id}
                                     variants={{
                                         hidden: { opacity: 0, scale: 0.9 },
@@ -132,16 +134,16 @@ const Dashboard = () => {
                                             </div>
                                         </div>
                                     )}
-                                </motion.div>
+                                </Motion.div>
                             ))}
-                        </motion.div>
+                        </Motion.div>
                     ) : (
                         <div className="text-center py-16 bg-white rounded-2xl shadow-sm">
                             <BookOpen size={64} className="mx-auto text-gray-300 mb-4" />
                             <p className="text-gray-500 text-lg mb-4">Siz hali hech qanday kursga a'zo bo'lmagansiz.</p>
-                            <a href="/" className="text-primary-600 hover:text-primary-700 font-medium">
+                            <Link to="/" className="text-primary-600 hover:text-primary-700 font-medium">
                                 Kurslarni ko'rish →
-                            </a>
+                            </Link>
                         </div>
                     )}
                 </div>

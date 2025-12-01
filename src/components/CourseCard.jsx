@@ -1,12 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Star, User } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import Badge from './Badge';
 
-const CourseCard = ({ course }) => {
+function CourseCard({ course }) {
+    const handleImageError = (e) => {
+        e.target.src = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=600&fit=crop&q=80';
+    };
+
     return (
-        <motion.div
+        <Motion.div
             whileHover={{ y: -8 }}
             transition={{ duration: 0.3 }}
             className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden group"
@@ -16,6 +20,8 @@ const CourseCard = ({ course }) => {
                     src={course.image}
                     alt={course.title}
                     className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={handleImageError}
+                    loading="lazy"
                 />
                 <div className="absolute top-4 left-4">
                     <Badge variant="primary">{course.category}</Badge>
@@ -48,8 +54,8 @@ const CourseCard = ({ course }) => {
                     </Link>
                 </div>
             </div>
-        </motion.div>
+        </Motion.div>
     );
-};
+}
 
 export default CourseCard;

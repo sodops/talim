@@ -8,14 +8,18 @@ import jsPDF from 'jspdf';
 const LessonPage = () => {
     const { courseId, lessonId } = useParams();
     const navigate = useNavigate();
-    const { courses, user, updateProgress } = useStore();
+    const courses = useStore((state) => state.courses);
+    const user = useStore((state) => state.user);
+    const markLessonComplete = useStore((state) => state.markLessonComplete);
+    const markCourseCompleted = useStore((state) => state.markCourseCompleted);
     const [activeTab, setActiveTab] = useState('video'); // video, quiz, certificate
     const [quizAnswers, setQuizAnswers] = useState({});
     const [quizResult, setQuizResult] = useState(null);
     const certificateRef = useRef(null);
 
-    const course = courses.find(c => c.id === parseInt(courseId));
-    const currentLesson = course?.lessons.find(l => l.id === parseInt(lessonId));
+    const course = courses.find((c) => c.id === parseInt(courseId, 10));
+    const currentLesson = course?.lessons.find((l) => l.id === parseInt(lessonId, 10));
+    const hasQuiz = Boolean(course?.quiz.length);
 
     if (!course || !currentLesson) return <div className="text-center py-10">Dars topilmadi</div>;
     if (!user?.enrolledCourses.includes(course.id)) {
@@ -23,24 +27,27 @@ const LessonPage = () => {
     }
 
     const handleLessonComplete = () => {
-        // Logic to mark lesson as complete (simplified: just update progress)
-        // In a real app, we'd track individual lessons.
-        // Here we just increment progress based on lesson count.
-        const progressStep = 100 / course.lessons.length;
-        const currentProgress = user.progress[course.id] || 0;
-        const newProgress = Math.min(currentProgress + progressStep, 100);
-        updateProgress(course.id, newProgress);
+        if (!course || !currentLesson) {
+            return;
+        }
+        markLessonComplete(course.id, currentLesson.id, course.lessons.length);
     };
 
     const handleQuizSubmit = () => {
+        if (!course || !hasQuiz) {
+            return;
+        }
+
         let correct = 0;
-        course.quiz.forEach(q => {
-            if (quizAnswers[q.id] === q.correctAnswer) correct++;
+        course.quiz.forEach((q) => {
+            if (quizAnswers[q.id] === q.correctAnswer) {
+                correct++;
+            }
         });
-        const score = (correct / course.quiz.length) * 100;
+        const score = Math.round((correct / course.quiz.length) * 100);
         setQuizResult(score);
         if (score >= 80) {
-            updateProgress(course.id, 100); // Mark course as 100% if quiz passed
+            markCourseCompleted(course.id);
         }
     };
 
@@ -63,11 +70,11 @@ const LessonPage = () => {
                 <div className="flex-1 overflow-y-auto p-6">
                     {activeTab === 'video' && (
                         <div>
-                            <div className="aspect-w-16 aspect-h-9 mb-6 bg-black rounded-lg overflow-hidden">
+                            <div className="aspect-video mb-6 bg-black rounded-lg overflow-hidden">
                                 <iframe
                                     src={currentLesson.videoUrl}
                                     title={currentLesson.title}
-                                    className="w-full h-[500px]"
+                                    className="w-full h-full"
                                     allowFullScreen
                                 ></iframe>
                             </div>
@@ -87,13 +94,17 @@ const LessonPage = () => {
                     {activeTab === 'quiz' && (
                         <div className="max-w-2xl mx-auto">
                             <h2 className="text-2xl font-bold mb-6">Bilimni sinash</h2>
-                            {quizResult === null ? (
+                            {!hasQuiz ? (
+                                <div className="text-center bg-white p-8 rounded-lg shadow-md">
+                                    <p className="text-lg text-gray-600">Bu kursda hali test mavjud emas.</p>
+                                </div>
+                            ) : quizResult === null ? (
                                 <div className="space-y-6">
                                     {course.quiz.map((q, index) => (
                                         <div key={q.id} className="bg-white p-6 rounded-lg shadow-sm border">
                                             <p className="font-medium text-lg mb-4">{index + 1}. {q.question}</p>
                                             <div className="space-y-2">
-                                                {q.options.map(option => (
+                                                {q.options.map((option) => (
                                                     <label key={option} className="flex items-center space-x-3 p-3 rounded hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200">
                                                         <input
                                                             type="radio"
@@ -135,7 +146,10 @@ const LessonPage = () => {
                                     )}
                                     {quizResult < 80 && (
                                         <button
-                                            onClick={() => setQuizResult(null)}
+                                            onClick={() => {
+                                                setQuizAnswers({});
+                                                setQuizResult(null);
+                                            }}
                                             className="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
                                         >
                                             Qayta ishlash
@@ -220,9 +234,10 @@ const LessonPage = () => {
                             className={`w-full py-2 rounded-lg font-medium transition ${activeTab === 'quiz'
                                     ? 'bg-blue-600 text-white'
                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }`}
+                                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                            disabled={!hasQuiz}
                         >
-                            Test ishlash
+                            {hasQuiz ? 'Test ishlash' : 'Test mavjud emas'}
                         </button>
                     </div>
                 </div>

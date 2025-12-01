@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Search, BookOpen, Users, Award, TrendingUp } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import CourseCard from '../components/CourseCard';
 import Button from '../components/Button';
 import { useStore } from '../context/useStore';
 
 const Home = () => {
-    const { courses } = useStore();
+    const courses = useStore((state) => state.courses);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -31,7 +31,7 @@ const Home = () => {
             <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 text-white py-12 md:py-20">
                 <div className="container mx-auto px-4">
                     <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-                        <motion.div
+                        <Motion.div
                             initial={{ opacity: 0, x: -50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.6 }}
@@ -44,61 +44,30 @@ const Home = () => {
                                 Eng yaxshi o'qituvchilar va zamonaviy kurslar bilan bilimingizni oshiring.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4">
-                                <button
+                                <Button
+                                    variant="outline"
+                                    size="lg"
+                                    className="bg-white text-primary-600 border-transparent shadow-md hover:bg-primary-100"
                                     onClick={() => {
                                         document.getElementById('courses-section')?.scrollIntoView({ behavior: 'smooth' });
-                                    }}
-                                    style={{
-                                        backgroundColor: 'white',
-                                        color: '#4F46E5',
-                                        padding: '12px 24px',
-                                        fontSize: '18px',
-                                        fontWeight: '600',
-                                        borderRadius: '8px',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                                        transition: 'all 0.2s'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.backgroundColor = '#EEF2FF';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.backgroundColor = 'white';
                                     }}
                                 >
                                     Kurslarni ko'rish
-                                </button>
-                                <button
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    size="lg"
+                                    className="text-white border-white hover:bg-white hover:text-primary-600"
                                     onClick={() => {
                                         document.getElementById('courses-section')?.scrollIntoView({ behavior: 'smooth' });
                                     }}
-                                    style={{
-                                        backgroundColor: 'transparent',
-                                        color: 'white',
-                                        padding: '12px 24px',
-                                        fontSize: '18px',
-                                        fontWeight: '600',
-                                        borderRadius: '8px',
-                                        border: '2px solid white',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.2s'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.backgroundColor = 'white';
-                                        e.currentTarget.style.color = '#4F46E5';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.backgroundColor = 'transparent';
-                                        e.currentTarget.style.color = 'white';
-                                    }}
                                 >
                                     Batafsil
-                                </button>
+                                </Button>
                             </div>
-                        </motion.div>
+                        </Motion.div>
 
-                        <motion.div
+                        <Motion.div
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
@@ -112,7 +81,7 @@ const Home = () => {
                                     className="relative rounded-3xl shadow-2xl"
                                 />
                             </div>
-                        </motion.div>
+                        </Motion.div>
                     </div>
                 </div>
             </section>
@@ -122,7 +91,7 @@ const Home = () => {
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                         {stats.map((stat, index) => (
-                            <motion.div
+                            <Motion.div
                                 key={index}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -134,7 +103,7 @@ const Home = () => {
                                 </div>
                                 <div className="text-3xl font-bold text-gray-900">{stat.value}</div>
                                 <div className="text-gray-600">{stat.label}</div>
-                            </motion.div>
+                            </Motion.div>
                         ))}
                     </div>
                 </div>
@@ -179,7 +148,8 @@ const Home = () => {
                     </div>
 
                     {filteredCourses.length > 0 ? (
-                        <motion.div
+                        <Motion.div
+                            key={selectedCategory}
                             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                             initial="hidden"
                             animate="visible"
@@ -192,17 +162,17 @@ const Home = () => {
                             }}
                         >
                             {filteredCourses.map(course => (
-                                <motion.div
-                                    key={course.id}
+                                <Motion.div
+                                    key={`${selectedCategory}-${course.id}`}
                                     variants={{
                                         hidden: { opacity: 0, y: 20 },
                                         visible: { opacity: 1, y: 0 }
                                     }}
                                 >
                                     <CourseCard course={course} />
-                                </motion.div>
+                                </Motion.div>
                             ))}
-                        </motion.div>
+                        </Motion.div>
                     ) : (
                         <div className="text-center py-16 bg-white rounded-lg">
                             <p className="text-gray-500 text-lg">Hech qanday kurs topilmadi.</p>

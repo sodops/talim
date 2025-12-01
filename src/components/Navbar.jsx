@@ -4,7 +4,7 @@ import { BookOpen, LayoutDashboard } from 'lucide-react';
 import { useStore } from '../context/useStore';
 
 const Navbar = () => {
-    const { user } = useStore();
+    const user = useStore((state) => state.user);
 
     return (
         <nav className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">

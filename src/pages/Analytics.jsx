@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { PieChart, Pie, Cell, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { DollarSign, Users, UserCheck, Calendar, TrendingUp, Target, Award, Globe, Zap, Shield, Code, Layers } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 
 const Analytics = () => {
     const [activeTab, setActiveTab] = useState('overview');
@@ -111,13 +112,13 @@ const Analytics = () => {
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="container mx-auto px-4">
                 {/* Header */}
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-12"
                 >
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                        EduSpace - Hackathon Pitch Deck
+                        EduSpace
                     </h1>
                     <p className="text-xl text-gray-600 mb-6">
                         O'zbekiston uchun zamonaviy onlayn ta'lim platformasi
@@ -145,12 +146,12 @@ const Analytics = () => {
                             Texnik
                         </button>
                     </div>
-                </motion.div>
+                </Motion.div>
 
                 {/* KPI Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                     {kpis.map((kpi, index) => (
-                        <motion.div
+                        <Motion.div
                             key={index}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -163,14 +164,14 @@ const Analytics = () => {
                             <div className="text-3xl font-bold text-gray-900 mb-1">{kpi.value}</div>
                             <div className="text-gray-700 font-medium mb-1">{kpi.label}</div>
                             <div className="text-sm text-gray-500">{kpi.subtext}</div>
-                        </motion.div>
+                        </Motion.div>
                     ))}
                 </div>
 
                 {/* Additional Metrics */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
                     {additionalMetrics.map((metric, index) => (
-                        <motion.div
+                        <Motion.div
                             key={index}
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -184,7 +185,7 @@ const Analytics = () => {
                                 <div className="text-2xl font-bold text-gray-900">{metric.value}</div>
                                 <div className="text-xs text-gray-600">{metric.label}</div>
                             </div>
-                        </motion.div>
+                        </Motion.div>
                     ))}
                 </div>
 
@@ -192,7 +193,7 @@ const Analytics = () => {
                 {activeTab === 'overview' && (
                     <>
                         {/* Market Analysis */}
-                        <motion.div
+                        <Motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             className="bg-white rounded-2xl shadow-lg p-8 mb-12"
@@ -225,10 +226,10 @@ const Analytics = () => {
                                     </ul>
                                 </div>
                             </div>
-                        </motion.div>
+                        </Motion.div>
 
                         {/* User Growth Chart */}
-                        <motion.div
+                        <Motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             className="bg-white rounded-2xl shadow-lg p-6 mb-12"
@@ -243,7 +244,7 @@ const Analytics = () => {
                                     <Area type="monotone" dataKey="users" stroke="#4F46E5" fill="#4F46E5" fillOpacity={0.3} />
                                 </AreaChart>
                             </ResponsiveContainer>
-                        </motion.div>
+                        </Motion.div>
                     </>
                 )}
 
@@ -252,7 +253,7 @@ const Analytics = () => {
                         {/* Charts Section */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
                             {/* Pie Chart - Financial Expenses */}
-                            <motion.div
+                            <Motion.div
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 className="bg-white rounded-2xl shadow-lg p-6"
@@ -288,10 +289,10 @@ const Analytics = () => {
                                         </div>
                                     ))}
                                 </div>
-                            </motion.div>
+                            </Motion.div>
 
                             {/* Bar Chart - Revenue Forecast */}
-                            <motion.div
+                            <Motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 className="bg-white rounded-2xl shadow-lg p-6"
@@ -314,7 +315,7 @@ const Analytics = () => {
                                         <span className="font-semibold">Break-even point: 6-oy | ROI: 200% (12-oy)</span>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </Motion.div>
                         </div>
                     </>
                 )}
@@ -322,7 +323,7 @@ const Analytics = () => {
                 {activeTab === 'technical' && (
                     <>
                         {/* Technical Stack */}
-                        <motion.div
+                        <Motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             className="bg-white rounded-2xl shadow-lg p-8 mb-12"
@@ -346,12 +347,12 @@ const Analytics = () => {
                                     </div>
                                 ))}
                             </div>
-                        </motion.div>
+                        </Motion.div>
                     </>
                 )}
 
                 {/* Team Structure Table */}
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white rounded-2xl shadow-lg p-6 mb-12"
@@ -389,10 +390,10 @@ const Analytics = () => {
                             </tbody>
                         </table>
                     </div>
-                </motion.div>
+                </Motion.div>
 
                 {/* Roadmap Timeline */}
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white rounded-2xl shadow-lg p-6"
@@ -433,10 +434,10 @@ const Analytics = () => {
                             </div>
                         ))}
                     </div>
-                </motion.div>
+                </Motion.div>
 
                 {/* Call to Action */}
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="mt-12 bg-gradient-to-r from-primary-600 to-primary-800 rounded-2xl p-8 text-center text-white"
@@ -447,11 +448,11 @@ const Analytics = () => {
                         <a href="mailto:contact@eduspace.uz" className="bg-white text-primary-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
                             Bog'lanish
                         </a>
-                        <a href="/dashboard" className="bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-800 transition-colors border-2 border-white">
+                        <Link to="/dashboard" className="bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-800 transition-colors border-2 border-white">
                             Demo ko'rish
-                        </a>
+                        </Link>
                     </div>
-                </motion.div>
+                </Motion.div>
             </div>
         </div>
     );

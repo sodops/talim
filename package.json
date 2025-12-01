@@ -5,9 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rm -rf node_modules dist .vite",
+    "update-deps": "npm update && npm outdated",
+    "check": "npm run lint && npm run build"
   },
   "dependencies": {
     "clsx": "^2.1.1",
