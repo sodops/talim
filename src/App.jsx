@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import CourseDetail from './pages/CourseDetail';
 import LessonPage from './pages/LessonPage';
+import Analytics from './pages/Analytics';
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -15,8 +17,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/analytics" element={<Analytics />} />
           <Route path="/course/:id" element={<CourseDetail />} />
           <Route path="/course/:courseId/lesson/:lessonId" element={<LessonPage />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </main>
       <Footer />
