@@ -53,8 +53,16 @@ const LessonPage = () => {
 
     const downloadCertificate = () => {
         const input = certificateRef.current;
-        html2canvas(input).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
+        html2canvas(input, {
+            scale: 2,
+            backgroundColor: '#ffffff',
+            useCORS: true,
+            allowTaint: false,
+            logging: false,
+            width: 800,
+            height: 600
+        }).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png', 1.0);
             const pdf = new jsPDF('l', 'mm', 'a4');
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
@@ -165,7 +173,7 @@ const LessonPage = () => {
                             <div
                                 ref={certificateRef}
                                 className="w-[800px] h-[600px] bg-white border-8 border-double border-blue-900 p-10 flex flex-col items-center justify-center text-center relative mb-6 shadow-2xl"
-                                style={{ backgroundImage: 'linear-gradient(to bottom right, #ffffff, #f0f9ff)' }}
+                                style={{ backgroundColor: '#ffffff', boxSizing: 'border-box' }}
                             >
                                 <div className="absolute top-10 left-10 w-20 h-20 border-t-4 border-l-4 border-blue-900"></div>
                                 <div className="absolute bottom-10 right-10 w-20 h-20 border-b-4 border-r-4 border-blue-900"></div>
@@ -232,8 +240,8 @@ const LessonPage = () => {
                         <button
                             onClick={() => setActiveTab('quiz')}
                             className={`w-full py-2 rounded-lg font-medium transition ${activeTab === 'quiz'
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 } disabled:opacity-50 disabled:cursor-not-allowed`}
                             disabled={!hasQuiz}
                         >
